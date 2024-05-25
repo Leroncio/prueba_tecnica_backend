@@ -1,0 +1,99 @@
+{
+	"info": {
+		"_postman_id": "10633088-751d-45c0-915a-e656341ed50b",
+		"name": "prueba_tecnica",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "29338545"
+	},
+	"item": [
+		{
+			"name": "test",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost/prueba_tecnica/user"
+			},
+			"response": []
+		},
+		{
+			"name": "getAll",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost/prueba_tecnica/user/all?token=aaaaaaaa-1234-1234-cc12-a1a1a1a1a1a1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"prueba_tecnica",
+						"user",
+						"all"
+					],
+					"query": [
+						{
+							"key": "token",
+							"value": "aaaaaaaa-1234-1234-cc12-a1a1a1a1a1a1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createUser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"token\":\"aaaaaaaa-1234-1234-cc12-a1a1a1a1a1a1\",\r\n    \"fullname\":\"\",\r\n    \"email\":\"testing6@gmail.com\",\r\n    \"address\":\"\",\r\n    \"birthdate\":\"2000-01-01\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost/prueba_tecnica/user/create"
+			},
+			"response": []
+		},
+		{
+			"name": "deleteUser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"token\":\"aaaaaaaa-1234-1234-cc12-a1a1a1a1a1a1\",\r\n    \"uuid\":\"aaaaa778-6666-4666-a71e-df62ba9a0000\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost/prueba_tecnica/user/delete"
+			},
+			"response": []
+		},
+		{
+			"name": "updateUser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"token\":\"aaaaaaaa-1234-1234-cc12-a1a1a1a1a1a1\",\r\n    \"uuid\":\"aaaaa778-6666-4666-a71e-df62ba9a0000\",\r\n    \"fullname\":\"testing\",\r\n    \"email\":\"testing@gmail.com\",\r\n    \"address\":\"testing 555\",\r\n    \"birthdate\":\"2000-01-01\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost/prueba_tecnica/user/update"
+			},
+			"response": []
+		}
+	]
+}

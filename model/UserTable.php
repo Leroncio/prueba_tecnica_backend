@@ -42,6 +42,17 @@ class UserTable{
     public function getUpdatedAt() : string { return $this->updated_at; }
     #endregion
 
+    #region setters
+    public function setId(int $id) { $this->id = $id; }
+    public function setUuid(string $uuid) { $this->uuid = $uuid; }
+    public function setFullname(string $fullname) { $this->fullname = $fullname; }
+    public function setEmail(string $email) { $this->email = $email; }
+    public function setAddress(string $address) { $this->address = $address; }
+    public function setBirthdate(string $birthdate) { $this->birthdate = $birthdate; }
+    public function setCreatedAt(string $created_at) { $this->created_at = $created_at; }
+    public function setUpdatedAt(string $updated_at) { $this->updated_at = $updated_at; }
+    #endregion
+
 
     //método público para la carga de información según id o uuid
     public function get(PDO $pdo) : bool{
@@ -86,8 +97,8 @@ class UserTable{
                     "email"=>$d["email"],
                     "address"=>$d["address"],
                     "birthdate"=>$d["birthdate"],
-                    "created_at"=>$d["updated_at"],
-                    "created_at"=>$d["updated_at"]
+                    "created_at"=>$d["created_at"],
+                    "updated_at"=>$d["updated_at"]
                 ));
             }
         }
@@ -97,14 +108,13 @@ class UserTable{
     //método público para la creación de nuevos usuarios
     public function create(PDO $pdo) : bool
     {
-        $query = "INSERT (uuid,fullname,email,address,birthdate,created_at, updated_at) VALUES (?,?,?,?,?,NOW(),NOW()) INTO users";
+        $query = "INSERT INTO users (uuid,fullname,email,address,birthdate,created_at,updated_at) VALUES (?,?,?,?,?,NOW(),NOW())";
         $statment = $pdo->prepare($query);
-        $statment->bindParam(1, $this->id, PDO::PARAM_INT);
-        $statment->bindParam(2, $this->uuid, PDO::PARAM_STR);
-        $statment->bindParam(3, $this->fullname, PDO::PARAM_STR);
-        $statment->bindParam(4, $this->email, PDO::PARAM_STR);
-        $statment->bindParam(5, $this->address, PDO::PARAM_STR);
-        $statment->bindParam(6, $this->birthdate, PDO::PARAM_STR);
+        $statment->bindParam(1, $this->uuid, PDO::PARAM_STR);
+        $statment->bindParam(2, $this->fullname, PDO::PARAM_STR);
+        $statment->bindParam(3, $this->email, PDO::PARAM_STR);
+        $statment->bindParam(4, $this->address, PDO::PARAM_STR);
+        $statment->bindParam(5, $this->birthdate, PDO::PARAM_STR);
         if ($statment->execute()) {
             return true;
         }
@@ -139,8 +149,8 @@ class UserTable{
         return false;
     }
 
-    //metodo privado para validar usuarios ingresados
-    private function validateUser(PDO $pdo) : bool
+    //metodo público para validar usuarios ingresados
+    public function validateUser(PDO $pdo) : bool
     {
         if($this->email != null && trim($this->email) != ""){
             $query = "SELECT id FROM users WHERE email = ?";
