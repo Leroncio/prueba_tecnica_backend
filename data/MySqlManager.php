@@ -1,7 +1,7 @@
 <?php
 
 //importe de parametros de archivo de configuración
-require_once './Parameters.php';
+require_once 'Parameters.php';
 
 class MySqlManager{
 
