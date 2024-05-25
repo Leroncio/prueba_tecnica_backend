@@ -1,8 +1,11 @@
 <?php
 
+require 'model/UserTable.php';
+
 //Recurso user (esta en minusculas para ser utilizado en la url de la api)
 class user {
 
+    //Llamadas de segmento en peticiones GET
     public static function get($urlSegments) {
         if (!isset($urlSegments[0])) {
             throw new ApiException(
@@ -15,9 +18,11 @@ class user {
         }
         switch ($urlSegments[0]) {
             case "all":
+                $allUser = UserTable::all(self::initConnection());
                 return [
                     "status" => 200,
-                    "total" => 200
+                    "total" => count($allUser),
+                    "users" => $allUser
                 ];
                 break;
             default:
@@ -29,6 +34,7 @@ class user {
         }
     }
 
+    //Llamadas de segmento en peticiones POST
     public static function post($urlSegments) {
         if (!isset($urlSegments[0])) {
             throw new ApiException(
@@ -49,6 +55,7 @@ class user {
         }
     }
 
+    //Llamadas de segmento en peticiones PUT (Deshabilitadas)
     public static function put($urlSegments) {
         throw new ApiException(
             405,
@@ -58,6 +65,7 @@ class user {
             "No se puede aplicar el método $_SERVER[REQUEST_METHOD] sobre el recurso \"$urlSegments\"");
     }
 
+    //Llamadas de segmento en peticiones DELETE (Deshabilitadas)
     public static function delete($urlSegments) {
         throw new ApiException(
             405,
@@ -65,6 +73,11 @@ class user {
             "Acción no permitida",
             "http://localhost",
             "No se puede aplicar el método $_SERVER[REQUEST_METHOD] sobre el recurso \"$urlSegments\"");
+    }
+
+    private static function initConnection() : PDO{
+        $pdo = MySqlManager::get()->init();
+        return $pdo;
     }
 
 }
