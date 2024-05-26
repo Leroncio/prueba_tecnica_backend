@@ -122,16 +122,26 @@ class UserTable{
     }
 
     //método público para la modificación de nuevos usuarios
-    public function update(PDO $pdo) : bool
+    public function update(PDO $pdo, bool $updateEmail = false) : bool
     {
-        $query = "UPDATE users SET fullname = ?,email = ?,address = ?,birthdate = ?, updated_at = NOW() WHERE uuid = ?";
+        $query = "UPDATE users SET fullname = ?,address = ?,birthdate = ?, updated_at = NOW() WHERE uuid = ?";
         $statment = $pdo->prepare($query);
         $statment->bindParam(1, $this->fullname, PDO::PARAM_STR);
-        $statment->bindParam(2, $this->email, PDO::PARAM_STR);
-        $statment->bindParam(3, $this->address, PDO::PARAM_STR);
-        $statment->bindParam(4, $this->birthdate, PDO::PARAM_STR);
-        $statment->bindParam(5, $this->uuid, PDO::PARAM_INT);
+        $statment->bindParam(2, $this->address, PDO::PARAM_STR);
+        $statment->bindParam(3, $this->birthdate, PDO::PARAM_STR);
+        $statment->bindParam(4, $this->uuid, PDO::PARAM_STR);
         if ($statment->execute()) {
+            if($updateEmail){
+                $query2 = "UPDATE users SET email = ?, updated_at = NOW() WHERE uuid = ?";
+                $statment2 = $pdo->prepare($query2);
+                $statment2->bindParam(1, $this->email, PDO::PARAM_STR);
+                $statment2->bindParam(2, $this->uuid, PDO::PARAM_STR);
+                if ($statment2->execute()) {
+                    if ($statment->rowCount() < 0) return false;
+                }else{
+                    return false;
+                }
+            }
             return ($statment->rowCount() > 0);
         }
         return false;

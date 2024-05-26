@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `fullname` varchar(400) DEFAULT NULL,
   `email` varchar(200) NOT NULL,
   `address` varchar(200) DEFAULT NULL,
-  `birthdate` datetime DEFAULT NULL,
+  `birthdate` date DEFAULT NULL,
   `created_at` timestamp NOT NULL,
   `updated_at` timestamp NOT NULL,
   PRIMARY KEY (`id`),

@@ -233,19 +233,37 @@ class user {
                     );
                     if($user->get($pdo)){
                         //actualizar datos del usuario
-                        $currentEmail = $user->getEmail();
+
                         $email = $decodedParameters["email"];
+                        if(trim($email) == ""){ //Prevedir que el email este en blanco
+                            throw new ApiException(
+                                400,
+                                1016,
+                                "Error de operación",
+                                "http://localhost",
+                                "El email es obligatorio"
+                            );
+                        }
+                        if(!filter_var($email, FILTER_VALIDATE_EMAIL)) { //Prevenir que se ingrese un correo invalido
+                            throw new ApiException(
+                                400,
+                                1016,
+                                "Error de operación",
+                                "http://localhost",
+                                "El email ingresado no corresponde a un correo electronico valido"
+                            );
+                        }
+
+                        $currentEmail = $user->getEmail();
                         if(trim($email) == "") $email = $currentEmail; //Prevedir que el email quede en blanco en caso de modificar
                         $fullname = $decodedParameters["fullname"];
                         $address = $decodedParameters["address"];
                         $birthdate = $decodedParameters["birthdate"];
 
+                        $updateEmail = ($currentEmail != $email); //corroborar si se va a modificar el correo
                         $user->setEmail($email);
-                        $user->setFullname($fullname);
-                        $user->setAddress($address);
-                        $user->setBirthdate($birthdate);
 
-                        if($email != $currentEmail){
+                        if($updateEmail){
                             if(!$user->validateUser($pdo)){ //corroborar que no se repita el email
                                 throw new ApiException(
                                     400,
@@ -256,8 +274,11 @@ class user {
                                 );
                             }
                         }
+                        $user->setFullname($fullname);
+                        $user->setAddress($address);
+                        $user->setBirthdate($birthdate);
 
-                        if($user->update($pdo)){ //actualizar usuario
+                        if($user->update($pdo, $updateEmail)){ //actualizar usuario
                             return [
                                 "status" => 200,
                                 "message" => "success",
