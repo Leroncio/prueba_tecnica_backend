@@ -34,7 +34,7 @@ class user {
             );
         }
 
-        $token = $_GET["token"];
+        $token = filter_input(INPUT_GET, 'token', FILTER_SANITIZE_SPECIAL_CHARS);
         if (strlen($token) == 36 && $token === self::$validationToken){ //verificar que el token este incluido en la solicitud
             $pdo = self::initConnection();
             switch ($urlSegments[0]) {
@@ -57,7 +57,7 @@ class user {
                             "El atributo \"search\" esta vacio o no definido"
                         );
                     }
-                    $uuid = $_GET["search"];
+                    $uuid = filter_input(INPUT_GET, 'search', FILTER_SANITIZE_SPECIAL_CHARS);
                     $user = new UserTable(
                         0,
                         $uuid
